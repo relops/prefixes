@@ -129,6 +129,11 @@ func Lookup(number string) (Country, error) {
 	}
 
 	if !ok {
+		p = number[0:3]
+		c, ok = prefixes[p]
+	}
+
+	if !ok {
 		return Country{}, fmt.Errorf("Resolved world code %s for number %s", p, number)
 	} else {
 		return c, nil
