@@ -2,8 +2,10 @@ package prefixes
 
 import (
 	"bytes"
+	"encoding/csv"
 	"fmt"
 	"github.com/relops/csvb"
+	"io"
 	"speter.net/go/exp/math/dec/inf"
 )
 
@@ -13,12 +15,55 @@ type Country struct {
 	Relevance *inf.Dec
 }
 
+type areaCode struct {
+	name        string
+	code        string
+	countryName string
+}
+
 var (
 	prefixes = make(map[string]Country)
+	nanp     = make(map[string]areaCode)
 )
 
 func init() {
 	initWorldData()
+	initNanpData()
+}
+
+func initNanpData() {
+	data, _ := data_canada_csv()
+	readNanp("Canada", data)
+	data, _ = data_usa_csv()
+	readNanp("United States", data)
+	data, _ = data_caribbean_csv()
+	readNanp("Carribean", data)
+	data, _ = data_non_geo_csv()
+	readNanp("Non Geo", data)
+}
+
+func readNanp(country string, data []byte) {
+	r := bytes.NewReader(data)
+
+	csv := csv.NewReader(r)
+	csv.FieldsPerRecord = -1
+
+	for {
+		row, err := csv.Read()
+		if err == io.EOF {
+			break
+		}
+
+		for i := 1; i < len(row); i++ {
+			area := areaCode{
+				name:        row[0],
+				code:        row[i],
+				countryName: country,
+			}
+			nanp[row[i]] = area
+		}
+
+	}
 }
 
 func initWorldData() {
@@ -70,17 +115,21 @@ func Lookup(number string) (Country, error) {
 		}
 	case "1":
 		{
-			p = number[0:4]
-			c, ok = prefixes[p]
+			p = number[1:4]
+			areaCode, ok := nanp[p]
 			if !ok {
-				p = number[0:1]
-				c, ok = prefixes[p]
+				return Country{}, fmt.Errorf("Resolved NANP code %s for number %s", p, number)
+			} else {
+				c.Name = areaCode.countryName
+				c.Prefix = areaCode.code
+				return c, nil
 			}
+
 		}
 	}
 
 	if !ok {
-		return Country{}, fmt.Errorf("Resolved %s for number %s", p, number)
+		return Country{}, fmt.Errorf("Resolved world code %s for number %s", p, number)
 	} else {
 		return c, nil
 	}

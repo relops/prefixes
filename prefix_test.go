@@ -14,6 +14,7 @@ var prefixTests = []struct {
 	{"61296384929", "Australia"},
 	{"74956034085", "Russia"},
 	{"14158575430", "United States"},
+	{"14169323338", "Canada"},
 }
 
 func TestPrefixes(t *testing.T) {
