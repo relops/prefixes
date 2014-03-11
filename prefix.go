@@ -7,6 +7,7 @@ import (
 	"github.com/relops/csvb"
 	"io"
 	"speter.net/go/exp/math/dec/inf"
+	"strings"
 )
 
 type Country struct {
@@ -85,17 +86,28 @@ func initWorldData() {
 			return false, err
 		}
 
-		_, ok := prefixes[c.Prefix]
-		if ok {
-			if prefixes[c.Prefix].Relevance.Cmp(c.Relevance) < 0 {
-				prefixes[c.Prefix] = c
+		if strings.Contains(c.Prefix, ",") {
+			for _, part := range strings.Split(c.Prefix, ",") {
+				c.Prefix = part
+				updateCountry(c)
 			}
 		} else {
-			prefixes[c.Prefix] = c
+			updateCountry(c)
 		}
 
 		return true, nil
 	})
+}
+
+func updateCountry(c Country) {
+	_, ok := prefixes[c.Prefix]
+	if ok {
+		if prefixes[c.Prefix].Relevance.Cmp(c.Relevance) < 0 {
+			prefixes[c.Prefix] = c
+		}
+	} else {
+		prefixes[c.Prefix] = c
+	}
 }
 
 func Lookup(number string) (Country, error) {
@@ -103,6 +115,9 @@ func Lookup(number string) (Country, error) {
 	c, ok := prefixes[p]
 
 	if ok {
+		if p == "39" && number[0:5] == "39066" {
+			c, ok = prefixes["39066"]
+		}
 		return c, nil
 	}
 
