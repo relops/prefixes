@@ -13,6 +13,7 @@ Features
 --------
 
 * Looks up country dialing code prefixes using a given number
+* Can tell the difference between the US and Canada
 
 Example
 -------
