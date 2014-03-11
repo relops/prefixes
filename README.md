@@ -32,3 +32,8 @@ func main() {
 	fmt.Printf("Country: %s\n", country.Name) // Prints Sweden
 }
 ```
+
+Broken Examples
+---------------
+
+We're keen to hear of any examples that don't work - in this case, please raise an issue.
