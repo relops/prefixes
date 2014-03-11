@@ -33,7 +33,12 @@ func main() {
 }
 ```
 
-Broken Examples
+Roadmap
+-------
+
+* Be more flexible about the input format of the number
+
+Feedback
 ---------------
 
 We're keen to hear of any examples that don't work - in this case, please raise an issue.
