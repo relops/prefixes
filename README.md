@@ -37,3 +37,13 @@ Broken Examples
 ---------------
 
 We're keen to hear of any examples that don't work - in this case, please raise an issue.
+
+Credits
+-------
+
+For providing the input data, kudos goes to:
+
+* https://github.com/mledoze/countries
+* http://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
+
+Please check out the terms under which you can use their data.
