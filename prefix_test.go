@@ -15,6 +15,7 @@ var prefixTests = []struct {
 	{"74956034085", "Russia"},
 	{"14158575430", "United States"},
 	{"14169323338", "Canada"},
+	{"12504798004", "Canada"},
 	{"420737471423", "Czech Republic"},
 	{"390669812345", "Vatican City"},
 	{"3799812345", "Vatican City"},
