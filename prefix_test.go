@@ -22,6 +22,10 @@ var prefixTests = []struct {
 	{"3799812345", "Vatican City"},
 }
 
+var invalidPrefixes = []string{
+	"",
+}
+
 func TestPrefixes(t *testing.T) {
 
 	for i, test := range prefixTests {
@@ -31,4 +35,12 @@ func TestPrefixes(t *testing.T) {
 		assert.Equal(t, test.name, c.Name, msg)
 	}
 
+}
+
+func TestInvalidPrefixes(t *testing.T) {
+	for i, prefix := range invalidPrefixes {
+		msg := fmt.Sprintf("Test %d", i)
+		_, err := Lookup(prefix)
+		assert.Error(t, err, msg)
+	}
 }

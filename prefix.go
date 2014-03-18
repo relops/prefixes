@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/relops/csvb"
 	"io"
+	"regexp"
 	"speter.net/go/exp/math/dec/inf"
 	"strings"
 )
@@ -23,8 +24,9 @@ type areaCode struct {
 }
 
 var (
-	prefixes = make(map[string]Country)
-	nanp     = make(map[string]areaCode)
+	prefixes    = make(map[string]Country)
+	nanp        = make(map[string]areaCode)
+	validNumber = regexp.MustCompile(`^[0-9]{4}[0-9]+$`)
 )
 
 func init() {
@@ -111,6 +113,11 @@ func updateCountry(c Country) {
 }
 
 func Lookup(number string) (Country, error) {
+
+	if !validNumber.MatchString(number) {
+		return Country{}, fmt.Errorf("Invalid number format: %s", number)
+	}
+
 	p := number[0:2]
 	c, ok := prefixes[p]
 
