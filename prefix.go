@@ -7,7 +7,7 @@ import (
 	"github.com/relops/csvb"
 	"io"
 	"regexp"
-	"speter.net/go/exp/math/dec/inf"
+	"gopkg.in/inf.v0"
 	"strings"
 )
 
